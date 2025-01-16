@@ -8,7 +8,7 @@ settings = {
     "monospace": True,
     "inverted": False,
     "greyscale_mode": "luminance",  # possible values: luminance, lightness, average, value
-    "font_name": "arialbi.ttf",
+    "font_name": "arialbd.ttf",
 }
 
 

@@ -100,7 +100,11 @@ class BrailleGUI(QWidget):
         self.fontLabel.setStyleSheet("color: #ffffff")
         self.fontLabel.setFont(QFont(FONT, FONT_SIZE, QFont.Bold))
         self.fontCombo = QComboBox()
-        for font in fm.findSystemFonts(fontpaths=None, fontext="ttf"):
+        fonts = sorted(
+            fm.findSystemFonts(fontpaths=None, fontext="ttf"),
+            key=lambda x: x.split("\\")[-1],
+        )
+        for font in fonts:
             font_name = font.split("\\")[-1]
             self.fontCombo.addItem(font_name)
         self.fontCombo.setCurrentText(settings["font_name"])
