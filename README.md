@@ -14,4 +14,4 @@ This project was created to enhance the twitch chat experience for retards like 
 - Extract the files to a folder of your choice.
 - Open a command prompt inside the folder and type `python GUI.py` to launch the application.
 
-[![sadE](https://imgur.com/IOIQTAE)](https://i.imgur.com/IOIQTAE.png)
+![sadE](https://i.imgur.com/IOIQTAE.png)
