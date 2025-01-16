@@ -4,7 +4,7 @@ This project was created to enhance the twitch chat experience for retards like 
 
 ## Requirements
 - Python - download from https://www.python.org/downloads
-- PyQt5 - open command prompt and type: `pip install pyqt5` after python is installed
+- PyQt5 - open command prompt and type: `python -m pip install pyqt5` after python is installed
 
 ## Download the code
 - Click the `<> Code` button (top-right) and select Download ZIP.
