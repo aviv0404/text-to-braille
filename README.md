@@ -2,6 +2,9 @@
 This is not a text-to-braille translator in the classical sense. Instead, it's a Python-based fork of [Image-to-Braille](https://github.com/505e06b2/Image-to-Braille) that applies to text inputs.
 This project was created to enhance the twitch chat experience for retards like me from the forsen community
 
+## Website
+There's a website now: https://aviv0404.github.io/text-to-braille/
+
 ## Requirements
 - Python - download from https://www.python.org/downloads
 - PyQt5 - open command prompt and type: `python -m pip install pyqt5` after python is installed
