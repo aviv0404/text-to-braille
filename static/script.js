@@ -9,24 +9,18 @@ settings = {
 window.onload = async function ()
 {
     const inputText = document.getElementById('input-text');
+    const getFontsButton = document.getElementById('get-fonts-button');
 
     inputText.addEventListener('input', async () =>
     {
         updateOutput();
     });
 
-    try
+    getFontsButton.addEventListener('click', async () =>
     {
-        // get font list
-        const fontSelect = document.getElementById('font-name');
-        const fontList = await window.queryLocalFonts();
-        // delete first child and populate with new options
-        fontSelect.removeChild(fontSelect.firstChild);
-        fontList.forEach(font => fontSelect.innerHTML += `<option value=${font}>${font}</option>`);
-    } catch (e)
-    {
-        console.error(e);
-    }
+        await updateFontList();
+    });
+
 
     // add event listeners to the settings elements
     document.querySelectorAll('.setting').forEach(setting =>
@@ -41,6 +35,16 @@ window.onload = async function ()
     });
 
 };
+
+async function updateFontList()
+{
+    // get font list
+    const fontSelect = document.getElementById('font-name');
+    const fontList = await window.queryLocalFonts();
+    // delete first child and populate with new options
+    fontSelect.removeChild(fontSelect.firstChild);
+    fontList.forEach(font => fontSelect.innerHTML += `<option value="${font.fullName}">${font.fullName}</option>`);
+}
 
 async function updateOutput()
 {
@@ -65,6 +69,11 @@ async function updateOutput()
     settings.font_name = inputData.fontName;
 
     // update output
+    if (inputData.text === '')
+    {
+        outputText.value = '';
+        return;
+    }
     outputText.value = await textToBraille(inputData.text, settings.font_name, settings.font_size);
 }
 

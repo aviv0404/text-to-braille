@@ -84,3 +84,7 @@ html {
     flex-direction: column;
     gap: 30px;
 }
+
+.setting {
+    max-width: 100px;
+}
