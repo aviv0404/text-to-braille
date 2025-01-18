@@ -278,6 +278,5 @@ function textToImage(text, font, fontSize, lineSpacing = 1)
 async function textToBraille(text, font, fontSize, lineSpacing = 1)
 {
     const image = await textToImage(text, font, fontSize, lineSpacing);
-    console.log(image.toDataURL());
     return await imageToBraille(image);
 }
