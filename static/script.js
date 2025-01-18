@@ -212,7 +212,7 @@ function textToImage(text, font, fontSize)
             ctx.font = `${fontSize}px ${font}`;
             const textMetrics = ctx.measureText(text);
             const textWidth = Math.ceil(textMetrics.actualBoundingBoxLeft + textMetrics.actualBoundingBoxRight);
-            const textHeight = Math.ceil(textMetrics.actualBoundingBoxAscent - textMetrics.actualBoundingBoxDescent);
+            const textHeight = Math.ceil(textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent);
 
             // resize the canvas to match the text dimensions
             canvas.width = textWidth;
@@ -226,7 +226,7 @@ function textToImage(text, font, fontSize)
             ctx.font = `${fontSize}px ${font}`;
             ctx.textBaseline = 'alphabetic';
             ctx.fillStyle = 'black';
-            ctx.fillText(text, textMetrics.actualBoundingBoxLeft, textHeight);
+            ctx.fillText(text, textMetrics.actualBoundingBoxLeft, textMetrics.actualBoundingBoxAscent);
 
             resolve(canvas);
         } catch (error)
@@ -239,5 +239,6 @@ function textToImage(text, font, fontSize)
 async function textToBraille(text, font, fontSize)
 {
     const image = await textToImage(text, font, fontSize);
+    console.log(image.toDataURL());
     return await imageToBraille(image);
 }
