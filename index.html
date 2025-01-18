@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Text-to-Braille Converter</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <script src="static/script.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="input-output">
+            <section class="input-section">
+                <h2>Input</h2>
+                <textarea id="input-text" placeholder="Enter text to convert"></textarea>
+            </section>
+            <section class="output-section">
+                <h2>Output</h2>
+                <textarea id="output-text" readonly></textarea>
+            </section>
+        </div>
+        <div class="settings">
+            <section class="settings-section">
+                <h1>Settings</h1>
+                <form class="settings-form" onsubmit="return false;">
+                    <div>
+                        <label for="width">Width:</label>
+                        <input type="number" id="width" value="31" class="setting">
+                    </div>
+
+                    <div>
+                        <label for="monospace">Monospace:</label>
+                        <input type="checkbox" id="monospace" class="setting" checked>
+                    </div>
+
+                    <div>
+                        <label for="inverted">Inverted:</label>
+                        <input type="checkbox" id="inverted" class="setting">
+                    </div>
+
+                    <div>
+                        <label for="greyscale-mode">Greyscale Mode:</label>
+                        <select id="greyscale-mode" class="setting">
+                            <option value="luminance">Luminance</option>
+                            <option value="lightness">Lightness</option>
+                            <option value="average">Average</option>
+                            <option value="value">Value</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="font-name">Font Name:</label>
+                        <select id="font-name" class="setting">
+                            <option value="Arial">Arial</option>
+                        </select>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>
