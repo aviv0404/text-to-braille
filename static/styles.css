@@ -41,11 +41,12 @@ html {
     resize: none;
     width: 100%;
     min-height: 20px;
-    max-height: 500px;
+    max-height: 300px;
     background-color: #1a1a1a;
     color: #ffffff;
     border: 1px solid #474747;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .output-section {
@@ -87,4 +88,38 @@ html {
 
 .setting {
     max-width: 100px;
+}
+
+#get-fonts-button {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #474747;
+    box-sizing: border-box;
+
+    border-radius: 5px;
+    padding: 5px 5px;
+    padding-top: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#font-name {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #474747;
+    box-sizing: border-box;
+
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+#width {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #474747;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
 }

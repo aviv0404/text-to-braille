@@ -3,9 +3,12 @@ settings = {
     "monospace": true,
     "inverted": false,
     "greyscale_mode": "luminance",
-    "font_name": "arialbd.ttf",
-    "font_size": 500
+    "font_name": "Arial",
+    "font_size": 500 // in pixels
 };
+
+MAX_TEXTAREA_HEIGHT = 300;
+
 window.onload = async function ()
 {
     const inputText = document.getElementById('input-text');
@@ -13,6 +16,7 @@ window.onload = async function ()
 
     inputText.addEventListener('input', async () =>
     {
+        resizeTextarea(inputText, MAX_TEXTAREA_HEIGHT);
         updateOutput();
     });
 
@@ -36,6 +40,16 @@ window.onload = async function ()
 
 };
 
+function resizeTextarea(textarea, maxHeight = 500)
+{
+    // reset height
+    textarea.style.height = 'auto';
+
+    // Set the height to the scroll height, respecting the max-height
+    textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + 'px'; // 500px is the max-height
+}
+
+
 async function updateFontList()
 {
     // get font list
@@ -57,7 +71,6 @@ async function updateOutput()
         width: +document.getElementById('width').value,
         monospace: document.getElementById('monospace').checked,
         inverted: document.getElementById('inverted').checked,
-        greyscaleMode: document.getElementById('greyscale-mode').value,
         fontName: document.getElementById('font-name').value,
     };
 
@@ -65,7 +78,6 @@ async function updateOutput()
     settings.width = inputData.width;
     settings.monospace = inputData.monospace;
     settings.inverted = inputData.inverted;
-    settings.greyscale_mode = inputData.greyscaleMode;
     settings.font_name = inputData.fontName;
 
     // update output
@@ -76,7 +88,6 @@ async function updateOutput()
     }
     outputText.value = await textToBraille(inputData.text, settings.font_name, settings.font_size);
 }
-
 
 function createImageCanvas(image)
 {
@@ -199,7 +210,7 @@ async function imageToBraille(canvas)
     return output;
 }
 
-function textToImage(text, font, fontSize)
+function textToImage(text, font, fontSize, lineSpacing = 1)
 {
     return new Promise((resolve, reject) =>
     {
@@ -208,25 +219,48 @@ function textToImage(text, font, fontSize)
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
 
-            // calculate exact dimensions of the text
+            // Split text into lines based on \n
+            const lines = text.split('\n');
+
+            // Set font for measuring text
             ctx.font = `${fontSize}px ${font}`;
-            const textMetrics = ctx.measureText(text);
-            const textWidth = Math.ceil(textMetrics.actualBoundingBoxLeft + textMetrics.actualBoundingBoxRight);
-            const textHeight = Math.ceil(textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent);
 
-            // resize the canvas to match the text dimensions
+            // Measure dimensions for each line
+            const lineMetrics = lines.map(line =>
+            {
+                const metrics = ctx.measureText(line);
+                return {
+                    width: Math.ceil(metrics.actualBoundingBoxLeft + metrics.actualBoundingBoxRight),
+                    height: Math.ceil(metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent),
+                    metrics
+                };
+            });
+
+            // Calculate canvas width and height
+            const textWidth = Math.max(...lineMetrics.map(m => m.width));
+            const textHeight = lineMetrics.reduce((totalHeight, m) => totalHeight + m.height * lineSpacing, 0);
+
+            // Resize canvas
             canvas.width = textWidth;
-            canvas.height = textHeight;
+            canvas.height = Math.ceil(textHeight);
 
-            // white background
+            // Fill background
             ctx.fillStyle = 'white';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // draw the text properly aligned
-            ctx.font = `${fontSize}px ${font}`;
-            ctx.textBaseline = 'alphabetic';
+            // Draw each line of text
             ctx.fillStyle = 'black';
-            ctx.fillText(text, textMetrics.actualBoundingBoxLeft, textMetrics.actualBoundingBoxAscent);
+            ctx.textBaseline = 'alphabetic';
+            let yOffset = 0;
+            // Set font for measuring text
+            ctx.font = `${fontSize}px ${font}`;
+            for (const [index, line] of lines.entries())
+            {
+                const { height } = lineMetrics[index];
+                yOffset += height;
+                ctx.fillText(line, lineMetrics[index].metrics.actualBoundingBoxLeft, yOffset - lineMetrics[index].metrics.actualBoundingBoxDescent);
+                yOffset += (lineSpacing - 1) * height; // add spacing between lines
+            }
 
             resolve(canvas);
         } catch (error)
@@ -236,9 +270,14 @@ function textToImage(text, font, fontSize)
     });
 }
 
-async function textToBraille(text, font, fontSize)
+
+
+
+
+
+async function textToBraille(text, font, fontSize, lineSpacing = 1)
 {
-    const image = await textToImage(text, font, fontSize);
+    const image = await textToImage(text, font, fontSize, lineSpacing);
     console.log(image.toDataURL());
     return await imageToBraille(image);
 }
